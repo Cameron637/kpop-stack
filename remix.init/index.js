@@ -46,13 +46,13 @@ async function main({ rootDirectory }) {
   // as well.
   const newEnv = env.replace(
     /^SESSION_SECRET=.*$/m,
-    `SESSION_SECRET="${getRandomString(16)}"`
+    `SESSION_SECRET="${getRandomString(16)}"`,
   );
 
   // Parse the README and replace the name with our app name
   const newReadme = readme.replace(
     new RegExp(escapeRegExp(REPLACER), "g"),
-    APP_NAME
+    APP_NAME,
   );
 
   // Parse the package file and rename the application name
@@ -60,7 +60,7 @@ async function main({ rootDirectory }) {
     JSON.stringify(
       sort({ ...JSON.parse(packageJson), name: APP_NAME }),
       null,
-      2
+      2,
     ) + "\n";
 
   await Promise.all([
@@ -78,7 +78,7 @@ Setup is almost complete! Follow these steps to finish initialization:
   npm run build
 - You're now ready to rock and roll 🤘
   npm run dev
-    `.trim()
+    `.trim(),
   );
 }
 

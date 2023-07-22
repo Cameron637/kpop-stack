@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import { createClient } from "@supabase/supabase-js";
 import invariant from "tiny-invariant";
 
@@ -10,17 +9,21 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
 invariant(
   supabaseUrl,
-  "SUPABASE_URL must be set in your environment variables."
+  "SUPABASE_URL must be set in your environment variables.",
 );
 invariant(
   supabaseAnonKey,
-  "SUPABASE_ANON_KEY must be set in your environment variables."
+  "SUPABASE_ANON_KEY must be set in your environment variables.",
 );
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false },
+});
 
 export async function createUser(email: string, password: string) {
-  const { user } = await supabase.auth.signUp({
+  const {
+    data: { user },
+  } = await supabase.auth.signUp({
     email,
     password,
   });
@@ -54,7 +57,10 @@ export async function getProfileByEmail(email?: string) {
 }
 
 export async function verifyLogin(email: string, password: string) {
-  const { user, error } = await supabase.auth.signIn({
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signInWithPassword({
     email,
     password,
   });

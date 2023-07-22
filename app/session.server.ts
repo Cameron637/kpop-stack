@@ -4,7 +4,7 @@ import { getProfileById } from "./models/user.server";
 
 invariant(
   process.env.SESSION_SECRET,
-  "SESSION_SECRET must be set in your environment variables."
+  "SESSION_SECRET must be set in your environment variables.",
 );
 
 export const sessionStorage = createCookieSessionStorage({
@@ -50,7 +50,7 @@ export async function getUser(request: Request) {
  */
 export async function requireUserId(
   request: Request,
-  redirectTo: string = new URL(request.url).pathname
+  redirectTo: string = new URL(request.url).pathname,
 ) {
   const userId = await getUserId(request);
   if (!userId) {

@@ -1,8 +1,4 @@
-import type {
-  ActionFunction,
-  LoaderArgs,
-  MetaFunction,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { createUserSession, getUserId } from "~/session.server";
@@ -27,7 +23,7 @@ export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
   return json({});
-};
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -39,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!validateEmail(email)) {
     return json<ActionData>(
       { errors: { email: "Email is invalid." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -47,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (typeof password !== "string") {
     return json(
       { errors: { password: "Valid password is required." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -55,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (password.length < 6) {
     return json<ActionData>(
       { errors: { password: "Password is too short." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -65,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (existingUser) {
     return json<ActionData>(
       { errors: { email: "A user already exists with this email." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -73,7 +69,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   return createUserSession({
     request,
-    userId: user.id,
+    userId: user?.id,
     remember: false,
     redirectTo: typeof redirectTo === "string" ? redirectTo : "/",
   });
